@@ -1,0 +1,25 @@
+==============================================================
+MILESTONE 1: single-neuron XOR  (20 random seeds each)
+==============================================================
+Point neuron                           solved XOR in  0/20 seeds | best = 2/4 correct
+Active dendrite neuron (8 branches)    solved XOR in 20/20 seeds | best = 4/4 correct
+
+Robustness (active neuron, 20 seeds each):
+  4 branches, threshold 1.0: solved 11/20
+  8 branches, threshold 1.0: solved 18/20
+  8 branches, threshold 0.5: solved 20/20
+  -> fewer branches / higher threshold leaves 'dead' branches that never
+     fire, so their surrogate gradient is tiny and they never learn.
+
+Best active neuron, inside view (which branches spiked):
+  x1 x2 | target | branch spikes | soma output | prediction
+   0  0 |   0    | [0, 0, 0, 0, 0, 0, 0, 0] |    -6.49    |     0
+   0  1 |   1    | [1, 0, 0, 0, 1, 1, 0, 1] |    +9.37    |     1
+   1  0 |   1    | [0, 1, 0, 0, 0, 0, 0, 0] |    +6.56    |     1
+   1  1 |   0    | [0, 0, 0, 1, 0, 0, 0, 0] |    -9.74    |     0
+
+==============================================================
+MILESTONE 2: gradient check (torch.autograd.gradcheck, float64)
+==============================================================
+(a) Backward pass vs. finite differences (smooth twin): PASSED
+(b) Same check on the hard step:                       FAILED (expected: true gradient of a step is 0)
