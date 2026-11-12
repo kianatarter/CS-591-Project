@@ -36,10 +36,10 @@ def train(model, seed):
     opt = torch.optim.Adam(model.parameters(), lr=0.05)
     loss_fn = nn.BCEWithLogitsLoss()   # output > 0 means "predict 1"
     for _ in range(EPOCHS):
-        opt.zero_grad()
-        loss = loss_fn(model(X), Y)
-        loss.backward()
-        opt.step()
+        opt.zero_grad()                #clear old slopes
+        loss = loss_fn(model(X), Y)    #forward: compute the loss
+        loss.backward()                #chain rule: slope of loss for every weight -> .grad
+        opt.step()                     # w <- w - lr * slope
     with torch.no_grad():
         correct = ((model(X) > 0).float() == Y).sum().item()
     return int(correct), loss.item()
